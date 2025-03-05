@@ -23,8 +23,24 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
-      - name: Run tests
-        run: mvn test
+      - name: Run tests with Maven
+        run: mvn clean test allure:report
+
+      # Upload Allure Report on failure
+      - name: Upload Allure report on failure
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: target/site/allure-maven-plugin
+
+      # Upload Allure Report on success
+      - name: Upload Allure report on success
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: target/site/allure-maven-plugin
 
       # Email Notification on Failure
       - name: Send email on failure
@@ -53,5 +69,3 @@ jobs:
           to: "zanitta.quaicoe@amalitech.com,tuffour.boateng@amalitech.com,francis.nsiah@amalitech.com"
           from: 'GitHub Actions'
           body: 'The pipeline run was successful! Check details: https://github.com/YOUR_REPO/actions/runs/${{ github.run_id }}'
-
-
