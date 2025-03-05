@@ -25,3 +25,33 @@ jobs:
 
       - name: Run tests
         run: mvn test
+
+      # Email Notification on Failure
+      - name: Send email on failure
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: '❌ Build Failed: XYZ Bank App'
+          to: "zanitta.quaicoe@amalitech.com,tuffour.boateng@amalitech.com,francis.nsiah@amalitech.com"
+          from: 'GitHub Actions'
+          body: 'The latest pipeline run has failed. Check the logs for more details: https://github.com/YOUR_REPO/actions/runs/${{ github.run_id }}'
+
+      # Email Notification on Success
+      - name: Send email on success
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: '✅ Build Succeeded: XYZ Bank App'
+          to: "zanitta.quaicoe@amalitech.com,tuffour.boateng@amalitech.com,francis.nsiah@amalitech.com"
+          from: 'GitHub Actions'
+          body: 'The pipeline run was successful! Check details: https://github.com/YOUR_REPO/actions/runs/${{ github.run_id }}'
+
+
