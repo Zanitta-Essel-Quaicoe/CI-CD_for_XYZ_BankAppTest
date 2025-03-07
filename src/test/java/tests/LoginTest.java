@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import pages.LoginPage;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -14,9 +15,16 @@ public class LoginTest {
     protected LoginPage loginPage;
 
     @BeforeEach
-    public  void setUp() {
+    public void setUp() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");  // Run in headless mode for CI
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--remote-allow-origins=*");
+
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
         driver.get("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
         loginPage = new LoginPage(driver);
@@ -28,7 +36,6 @@ public class LoginTest {
     }
 
     public void loginAsBankManager() {
-
         loginPage.clickBankManagerLogin();
     }
 
@@ -44,5 +51,4 @@ public class LoginTest {
             driver.quit();
         }
     }
-
 }
