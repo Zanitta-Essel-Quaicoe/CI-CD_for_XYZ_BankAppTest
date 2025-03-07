@@ -20,27 +20,19 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
+      - name: Cache Maven dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
       - name: Build with Maven
-        run: mvn clean package
+        run: mvn clean package -DskipTests
 
-      - name: Run tests with Maven
-        run: mvn clean test allure:report
-
-      # Upload Allure Report on failure
-      - name: Upload Allure report on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: target/site/allure-maven-plugin
-
-      # Upload Allure Report on success
-      - name: Upload Allure report on success
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-report
-          path: target/site/allure-maven-plugin
+      - name: Run tests
+        run: mvn clean test
 
       # Email Notification on Failure
       - name: Send email on failure
@@ -54,7 +46,7 @@ jobs:
           subject: '❌ Build Failed: XYZ Bank App'
           to: "zanitta.quaicoe@amalitech.com,tuffour.boateng@amalitech.com,francis.nsiah@amalitech.com"
           from: 'GitHub Actions'
-          body: 'The latest pipeline run has failed. Check the logs for more details: https://github.com/YOUR_REPO/actions/runs/${{ github.run_id }}'
+          body: 'The latest pipeline run has failed. Check the logs for more details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
 
       # Email Notification on Success
       - name: Send email on success
@@ -68,4 +60,4 @@ jobs:
           subject: '✅ Build Succeeded: XYZ Bank App'
           to: "zanitta.quaicoe@amalitech.com,tuffour.boateng@amalitech.com,francis.nsiah@amalitech.com"
           from: 'GitHub Actions'
-          body: 'The pipeline run was successful! Check details: https://github.com/YOUR_REPO/actions/runs/${{ github.run_id }}'
+          body: 'The pipeline run was successful! Check details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
