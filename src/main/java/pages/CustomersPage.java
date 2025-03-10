@@ -50,12 +50,12 @@ public class CustomersPage {
         searchInput.sendKeys(customerName);
 
         // Wait for delete button to appear
-        wait.until(ExpectedConditions.elementToBeClickable(deleteButtons));
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(deleteButtons));
 
         List<WebElement> deleteBtns = driver.findElements(deleteButtons);
         if (!deleteBtns.isEmpty()) {
             System.out.println("Deleting customer: " + customerName);
-            deleteBtns.get(0).click(); // Click the first delete button
+            driver.findElements(deleteButtons).get(0).click(); // Re-fetch elements before clicking to avoid stale elements
         } else {
             System.out.println("No delete button found for customer: " + customerName);
         }
