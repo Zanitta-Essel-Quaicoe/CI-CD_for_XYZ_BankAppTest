@@ -62,20 +62,20 @@ jobs:
           from: 'GitHub Actions'
           body: 'The pipeline run was successful! Check details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
 
-#      # Slack Notification on Success
-#      - name: Send Slack notification on success
-#        if: success()
-#        run: |
-#          curl -X POST -H 'Content-type: application/json' --data \
-#          '{
-#            "text": "✅ *Build Succeeded*: XYZ Bank App pipeline completed successfully! 🎉\n\n*Repository:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Triggered by:* `${{ github.actor }}`\n\n➡️ View details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-#          }' ${{ secrets.SLACK_WEBHOOK_URL }}
-#
-#      # Slack Notification on Failure
-#      - name: Send Slack notification on failure
-#        if: failure()
-#        run: |
-#          curl -X POST -H 'Content-type: application/json' --data \
-#          '{
-#            "text": "❌ *Build Failed*: XYZ Bank App pipeline encountered an error! 🔥\n\n*Repository:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Triggered by:* `${{ github.actor }}`\n\n➡️ Check the logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-#          }' ${{ secrets.SLACK_WEBHOOK_URL }}
+      # Slack Notification on Success
+      - name: Send Slack notification on success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data \
+          '{
+            "text": "✅ *Build Succeeded*: XYZ Bank App pipeline completed successfully! 🎉\n\n*Repository:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Triggered by:* `${{ github.actor }}`\n\n➡️ View details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      # Slack Notification on Failure
+      - name: Send Slack notification on failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data \
+          '{
+            "text": "❌ *Build Failed*: XYZ Bank App pipeline encountered an error! 🔥\n\n*Repository:* `${{ github.repository }}`\n*Branch:* `${{ github.ref_name }}`\n*Triggered by:* `${{ github.actor }}`\n\n➡️ Check the logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }' ${{ secrets.SLACK_WEBHOOK_URL }}
